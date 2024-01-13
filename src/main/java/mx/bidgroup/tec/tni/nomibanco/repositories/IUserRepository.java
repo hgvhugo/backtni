@@ -11,4 +11,10 @@ import mx.bidgroup.tec.tni.nomibanco.entities.UserEntity;
 public interface IUserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByUsername(String username);
+
+    boolean existsByUsername(String username);
+    
+    boolean existsByRfc(String rfc);
+
+
 }

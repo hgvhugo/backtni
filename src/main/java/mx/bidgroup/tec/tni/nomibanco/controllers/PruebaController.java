@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import mx.bidgroup.tec.tni.nomibanco.dtos.ErrorDto;
 
 @RestController
-@RequestMapping("/prueba")
+@RequestMapping("api/v1/prueba")
 public class PruebaController {
     
 

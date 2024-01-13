@@ -40,11 +40,12 @@ public class SecurityConfig {
         CsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new CsrfTokenRequestAttributeHandler();
 
 		http
-			 .csrf((csrf) -> csrf.csrfTokenRequestHandler(csrfTokenRequestAttributeHandler)
-                        .ignoringRequestMatchers("/auth/**", "/prueba/admin")
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+			 .csrf((csrf) -> csrf.disable())
+					// (csrf) -> csrf.csrfTokenRequestHandler(csrfTokenRequestAttributeHandler)
+                    //     .ignoringRequestMatchers("/api/v1/auth/**")
+                    //     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
 				.authorizeHttpRequests((authorize) -> authorize
-						.requestMatchers("/auth/**").permitAll()
+						.requestMatchers("/api/v1/auth/**","/api/v1/doc/**","/v3/api-docs/**").permitAll()
 						.requestMatchers("/prueba/admin").hasAuthority("admin")
 						.anyRequest().authenticated())
 				// .csrf((csrf) -> csrf.ignoringRequestMatchers("/auth/**"))

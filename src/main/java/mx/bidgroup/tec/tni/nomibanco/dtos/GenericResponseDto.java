@@ -1,5 +1,7 @@
 package mx.bidgroup.tec.tni.nomibanco.dtos;
 
+import java.util.List;
+
 import lombok.*;
 
 @AllArgsConstructor
@@ -7,11 +9,10 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@Builder
-public class RolDto {
+public class GenericResponseDto<T> {
 
-    
-    private Long id;
-    private String rol;
+    private String code;
+    private String message;
+    List<T> data;
 
 }

@@ -1,7 +1,7 @@
 package mx.bidgroup.tec.tni.nomibanco.configs.security.jwt;
-
-import java.util.Date;
-
+ 
+import java.time.Instant;
+import java.time.LocalDateTime; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -24,15 +24,17 @@ public class JwtUtils {
         return (username.equals(userDetails.getUsername())&& !isTokenExpired(token));
     }
 
-    private Date getExpiration(String token)
+    private Instant getExpiration(String token)
     {
 
-        return Date.from(jwtDecoder.decode(token).getExpiresAt());
+        return Instant.from(jwtDecoder.decode(token).getExpiresAt());
     }
 
     
     private boolean isTokenExpired(String token)
     {
-        return getExpiration(token).before(new Date());
+        return getExpiration(token).isBefore(Instant.now());
+        // return getExpiration(token).before(LocalDateTime.from(Instant.now()));
+
     }
 }

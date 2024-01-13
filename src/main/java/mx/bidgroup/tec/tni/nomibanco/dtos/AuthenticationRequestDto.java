@@ -1,5 +1,5 @@
 package mx.bidgroup.tec.tni.nomibanco.dtos;
-
+ 
 import lombok.*;
 
 @AllArgsConstructor
@@ -8,8 +8,8 @@ import lombok.*;
 @Setter
 @ToString
 public class AuthenticationRequestDto {
-
-    private String username;
+ 
+    private String username; 
     private String password;
     
 }

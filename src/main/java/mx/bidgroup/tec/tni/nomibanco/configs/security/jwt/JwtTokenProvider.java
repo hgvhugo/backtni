@@ -1,6 +1,8 @@
 package mx.bidgroup.tec.tni.nomibanco.configs.security.jwt;
  
 import java.time.Instant; 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +27,11 @@ public class JwtTokenProvider {
     public String generateToken(UserDetails userDetails) {
         
 
-        Instant now = Instant.now();
+        Instant now =   Instant.now();
+        // Instant now =   LocalDateTime.now().toInstant(ZoneOffset.UTC);  Se comenta para usar UTC en vez de Local
+        System.out.println("now: " + now);
         Instant expirationTime = now.plusSeconds(expirationtoken);
+        System.out.println("expirationTime: " + expirationTime);
 
         String scope = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                             .collect(Collectors.joining(","));

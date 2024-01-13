@@ -27,6 +27,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
+
 import lombok.RequiredArgsConstructor;
 import mx.bidgroup.tec.tni.nomibanco.repositories.IUserRepository;
 
@@ -84,4 +85,12 @@ public class ProjectConfig {
 		JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
 		return new NimbusJwtEncoder(jwks);
 	}
+
+	// @Bean
+    // public OpenAPI customOpenAPI() {
+    //     return new OpenAPI()
+    //             .components(new Components().addSecuritySchemes("bearerAuth",
+    //                     new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
+    // }
+
 }
