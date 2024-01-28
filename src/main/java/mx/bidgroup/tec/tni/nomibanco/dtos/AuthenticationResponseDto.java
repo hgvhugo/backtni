@@ -1,9 +1,5 @@
 package mx.bidgroup.tec.tni.nomibanco.dtos;
-
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+ 
 import lombok.*;
 
 @AllArgsConstructor
@@ -16,6 +12,8 @@ public class AuthenticationResponseDto {
 
     private String token;
     private String username;
-    @JsonIgnore
-    private Set<String> roles;
+    // @JsonIgnore
+    private ShortRoleDto roles;
+    // private Set<RolDto> roles;
 }
+

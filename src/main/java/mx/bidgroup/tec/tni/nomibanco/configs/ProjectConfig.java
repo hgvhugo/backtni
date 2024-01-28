@@ -3,6 +3,7 @@ package mx.bidgroup.tec.tni.nomibanco.configs;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper; 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +30,9 @@ import com.nimbusds.jose.proc.SecurityContext;
 
 
 import lombok.RequiredArgsConstructor;
-import mx.bidgroup.tec.tni.nomibanco.repositories.IUserRepository;
+import mx.bidgroup.tec.tni.nomibanco.dtos.RoleMenuDto;
+import mx.bidgroup.tec.tni.nomibanco.entities.tbr.RoleMenuEntity;
+import mx.bidgroup.tec.tni.nomibanco.repositories.cat.IUserRepository;
 
 @Configuration
 @RequiredArgsConstructor
@@ -42,11 +45,21 @@ public class ProjectConfig {
     @Value("${jwt.private.key}")
 	RSAPrivateKey priv;
     
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
-
+    // @Bean
+    // public ModelMapper modelMapper() {
+    //     return new ModelMapper();
+    // }
+	@Bean
+	public ModelMapper modelMapper() {
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+		modelMapper.createTypeMap(RoleMenuEntity.class, RoleMenuDto.class)
+        .addMappings(mapper -> {
+            mapper.map(src -> src.getId().getRoleId(), (dest, v) -> dest.getId().setId_rol((Long) v));
+            mapper.map(src -> src.getId().getMenuId(), (dest, v) -> dest.getId().setId_menu((Long) v));
+        });
+		return modelMapper;
+	}
     
 	@Bean
 	public PasswordEncoder passwordEncoder() {

@@ -3,7 +3,8 @@ package mx.bidgroup.tec.tni.nomibanco.configs.security;
 import java.util.Arrays;
 import java.util.Collections;  
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration; 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider; 
 import org.springframework.security.config.Customizer; 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,10 +46,13 @@ public class SecurityConfig {
                     //     .ignoringRequestMatchers("/api/v1/auth/**")
                     //     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
 				.authorizeHttpRequests((authorize) -> authorize
-						.requestMatchers("/api/v1/auth/**","/api/v1/doc/**","/v3/api-docs/**").permitAll()
-						.requestMatchers("/prueba/admin").hasAuthority("admin")
-						.anyRequest().authenticated())
+						// .requestMatchers("/api/v1/auth/**","/api/v1/doc/**","/v3/api-docs/**","/api/v1/menu/**").permitAll()
+						// .requestMatchers(HttpMethod.POST, "/api/v1/user").permitAll()
+						// .requestMatchers("/prueba/admin").hasAuthority("admin")
+						// .anyRequest().authenticated())
+						.anyRequest().permitAll())
 				// .csrf((csrf) -> csrf.ignoringRequestMatchers("/auth/**"))
+				
 				.cors(cors -> cors.configurationSource(new CorsConfigurationSource() {
 					@Override
 					public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {

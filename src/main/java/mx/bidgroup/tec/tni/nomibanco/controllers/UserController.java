@@ -70,19 +70,10 @@ public class UserController {
                     .status(HttpStatus.CREATED)
                     .header("Content-Type", "application/json")
                     .body(genericResponseDto);
-        }catch (ConflictException e) {
-            throw new ConflictException("Error al crear usuario, causa: " + e.getMessage()) {
-            };
-        } 
-        catch (BadRequestException e) {
-            throw new BadRequestException("Error al crear usuario, causa: " + e.getMessage()) {
-            };
         } 
         
         catch (Exception e) {
-
-            throw new BadRequestException("Error al crear usuario, causa: " + e.getMessage()) {
-            };
+            throw e;
 
         }
     }

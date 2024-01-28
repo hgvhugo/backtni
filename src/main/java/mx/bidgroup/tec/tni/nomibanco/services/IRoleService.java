@@ -4,7 +4,7 @@ import java.util.List;
 
 import mx.bidgroup.tec.tni.nomibanco.dtos.RolDto;
 
-public interface IRolService {
+public interface IRoleService {
 
     RolDto getRolById(Long id);
     List<RolDto> getRoles();

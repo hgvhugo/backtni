@@ -1,4 +1,4 @@
-package mx.bidgroup.tec.tni.nomibanco.entities;
+package mx.bidgroup.tec.tni.nomibanco.entities.cat;
 
 import jakarta.persistence.*;
 
@@ -21,55 +21,58 @@ import lombok.*;
 @Setter
 @ToString
 @Entity
-@Table(name = "usuarios")
+@Table(name = "cat_usuarios")
 public class UserEntity implements UserDetails {
  
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
+    @Column(name = "Id_Usuario")
     private Long id;
 
-    @Column(name = "rfc")
+    @Column(name = "RFC")
     private String rfc;
     
-    @Column(name = "nombre")
+    @Column(name = "Nombre")
     private String nombre;
 
-    @Column(name = "apellido_paterno")
+    @Column(name = "Apellido1")
     private String apellidoPaterno;
 
-    @Column(name = "apellido_materno")
+    @Column(name = "Apellido2")
     private String apellidoMaterno;
 
-    @Column(name = "email")
+    @Column(name = "Correo_Electronico")
     private String email;
 
     @Column(name = "telefono")
     private String telefono;
 
-    @Column(name = "username")
+    @Column(name = "Username")
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "Contraseña")
     private String password;
  
-    @Column(name = "estatus")
+    @Column(name = "Estatus")
     private Boolean estatus;
 
-    @Column(name = "fecha_alta")
+    @Column(name = "Fecha_Alta")
     @CreationTimestamp
     private LocalDateTime fechaAlta;
 
-    @Column(name = "fecha_baja")    
+    @Column(name = "Fecha_Baja")    
     private LocalDateTime fechaBaja;
 
-    @Column(name = "fecha_modificacion")
+    @Column(name = "Fecha_Modificacion")
     @UpdateTimestamp
     private LocalDateTime fechaModificacion; 
 
-    @ManyToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    @JoinTable(name = "usuarios_roles"
+    @Column(name = "Baja_Modificacion")
+    private boolean bajaModificacion;
+
+    @ManyToMany(fetch = FetchType.EAGER , cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(name = "tbl_usuarios_roles"
         , joinColumns = @JoinColumn(name = "id_usuario" , referencedColumnName = "id_usuario")
         , inverseJoinColumns = @JoinColumn(name = "id_rol" , referencedColumnName = "id_rol"))
     private Set<RoleEntity> roles;
@@ -88,7 +91,7 @@ public class UserEntity implements UserDetails {
     public  List<GrantedAuthority> getAuthorities() {
          List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-        for (RoleEntity rol : roles) {
+        for (RoleEntity rol : roles) { 
             grantedAuthorities.add(new SimpleGrantedAuthority(rol.getRol()));
         }
 

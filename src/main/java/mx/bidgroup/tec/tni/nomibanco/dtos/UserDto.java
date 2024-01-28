@@ -5,6 +5,8 @@ import java.util.Set;
  
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
@@ -21,6 +23,7 @@ import lombok.*;
 @ToString
 public class UserDto {
 
+    @Schema(accessMode = AccessMode.READ_ONLY)
     private Long id;
 
     @NotBlank(message = "El RFC es requerido")
@@ -52,7 +55,7 @@ public class UserDto {
     @NotNull(message = "La contraseña es requerida")
     private String password;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<RolDto> roles;
 
     private Boolean estatus;
