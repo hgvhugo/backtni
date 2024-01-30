@@ -2,6 +2,7 @@ package mx.bidgroup.tec.tni.nomibanco.services.impl;
 
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -51,12 +52,14 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         // Se obtiene el usuario
         UserDetails userDetails = userRepository.findByUsername(authenticationRequestDto.getUsername()).orElseThrow();
         
-        ShortRoleDto shortRoleDto = new ShortRoleDto();
+        Set<ShortRoleDto> shortRoleDtos = new java.util.HashSet<ShortRoleDto>();
 
         for (GrantedAuthority authority : userDetails.getAuthorities()) {
+            ShortRoleDto shortRoleDto = new ShortRoleDto();
             List<RoleEntity> roleEntity =  roleRepository.findByRol(authority.getAuthority());
             shortRoleDto.setId(roleEntity.get(0).getId());
             shortRoleDto.setRol(roleEntity.get(0).getRol());
+            shortRoleDtos.add(shortRoleDto);
         }
         
         //Se obtienen los roles del usuario
@@ -70,7 +73,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         return AuthenticationResponseDto.builder()
             .token(jwtTokenProvider.generateToken(userDetails))
             .username(userDetails.getUsername())
-            .roles(shortRoleDto)
+            .roles(shortRoleDtos)
             .build();
 
             

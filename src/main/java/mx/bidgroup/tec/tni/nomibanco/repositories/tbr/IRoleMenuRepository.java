@@ -13,4 +13,7 @@ public interface IRoleMenuRepository extends JpaRepository<RoleMenuEntity, RoleM
 
     // List<RoleMenuEntity> findByRoleMenu(String roleMenu);
     List<RoleMenuEntity> findByLowLogicFalse();
+    List<RoleMenuEntity> findById_RoleIdAndLowLogicFalse(Long idRol);
+
+    
 }

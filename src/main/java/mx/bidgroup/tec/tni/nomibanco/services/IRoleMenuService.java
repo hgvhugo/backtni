@@ -13,6 +13,6 @@ public interface IRoleMenuService {
     void deleteRoleMenu(RelRoleMenuDto relRoleMenuDto);
     RoleMenuDto getRoleMenuById(RelRoleMenuDto relRoleMenuDto);
     List<RoleMenuDto> getRoleMenus();
+    List<RoleMenuDto> getRoleMenusByRoleId(Long idRol);
 
-    
 }

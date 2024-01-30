@@ -86,5 +86,11 @@ public class RoleMenuController {
         }
         
     }
+
+    @GetMapping("/roleMenus/role/{idRol}")
+    public ResponseEntity<List<RoleMenuDto>> getRoleMenusByRoleId(@PathVariable Long idRol) {
+        List<RoleMenuDto> roleMenuDtos = roleMenuService.getRoleMenusByRoleId(idRol);
+        return new ResponseEntity<>(roleMenuDtos, HttpStatus.OK);
+    }
     
 }

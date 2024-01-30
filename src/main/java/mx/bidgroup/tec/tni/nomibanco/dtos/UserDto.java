@@ -13,6 +13,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -53,6 +54,8 @@ public class UserDto {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotBlank(message = "La contraseña es requerida")
     @NotNull(message = "La contraseña es requerida")
+    @Size(min = 8, max = 20, message = "La contraseña debe tener entre 8 y 20 caracteres")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", message = "La contraseña debe tener entre 8 y 20 caracteres, contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial")
     private String password;
 
     // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

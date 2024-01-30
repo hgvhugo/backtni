@@ -33,6 +33,7 @@ public class DependencyServiceImpl implements IDependencyService {
             }
 
             DependencyEntity dependency = modelMapper.map(dependencyDto, DependencyEntity.class);
+            dependency.setId(0L);
 
             dependency = dependencyRepository.save(dependency);
 

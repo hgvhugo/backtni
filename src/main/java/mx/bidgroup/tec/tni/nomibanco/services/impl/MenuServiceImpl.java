@@ -76,6 +76,7 @@ public class MenuServiceImpl implements IMenuService {
             log.info("Ingresa a createMenu method de MenuServiceImpl");   
 
             MenuEntity menuEntity = modelMapper.map(menuDto, MenuEntity.class);
+            menuEntity.setId(0L);
             
             if( menuRepository.findByMenu(menuDto.getMenu()).size() > 0) {
                 log.error("Error en createMenu method de MenuServiceImpl: El menu ya existe");

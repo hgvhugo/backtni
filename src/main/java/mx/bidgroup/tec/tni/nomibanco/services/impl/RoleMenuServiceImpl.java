@@ -153,7 +153,14 @@ public class RoleMenuServiceImpl implements IRoleMenuService {
         
     }
 
-    
+    @Override
+    public List<RoleMenuDto> getRoleMenusByRoleId(Long idRol) {
+        List<RoleMenuEntity> roleMenus = roleMenuRepository.findById_RoleIdAndLowLogicFalse(idRol);
+        if (roleMenus.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron roleMenus para el id_rol: " + idRol);
+        }
+        return roleMenus.stream().map(roleMenu -> modelMapper.map(roleMenu, RoleMenuDto.class)).toList();
+    }
   
  
 
