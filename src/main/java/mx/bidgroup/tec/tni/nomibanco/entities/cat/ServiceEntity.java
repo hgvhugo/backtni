@@ -3,11 +3,16 @@ package mx.bidgroup.tec.tni.nomibanco.entities.cat;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.*;
+import mx.bidgroup.tec.tni.nomibanco.dtos.QuejasSolicitudesDto;
+import mx.bidgroup.tec.tni.nomibanco.dtos.ServicioDto;
+import mx.bidgroup.tec.tni.nomibanco.entities.tbl.QuejasSolicitudesEntity;
+import mx.bidgroup.tec.tni.nomibanco.entities.tbr.RoleMenuEntity;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +23,7 @@ import lombok.*;
 @Table(name = "cat_servicio")
 public class ServiceEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_servicio")
     private Long id;
 
@@ -31,8 +36,7 @@ public class ServiceEntity implements Serializable {
 
     @Column(name = "fecha_modificacion")
     @UpdateTimestamp
-    private LocalDateTime  modificationDate;
-
+    private LocalDateTime modificationDate;
 
     @Column(name = "fecha_baja")
     private LocalDateTime deletionDate;
@@ -40,5 +44,17 @@ public class ServiceEntity implements Serializable {
     @Column(name = "baja_logica")
     private Boolean lowLogic;
 
-    
+    // @OneToMany(mappedBy="ServiceEntity")
+    // // @JoinColumn(name="id_servicio")
+    // private List<QuejasSolicitudesDto> quejasSolicitudes;
+
+    // @OneToMany(fetch = FetchType.LAZY, mappedBy = "ServiceEntity", cascade =
+    // CascadeType.ALL)
+    // private Set<ServicioDto> servicio;
+
+    // @OneToMany(mappedBy = "menu")
+    // private Set<RoleMenuEntity> rolemenus;
+    @OneToMany(mappedBy = "servicio")
+    private Set<QuejasSolicitudesEntity> servicio;
+
 }
