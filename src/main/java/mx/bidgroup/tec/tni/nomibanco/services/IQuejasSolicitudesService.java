@@ -6,5 +6,5 @@ import mx.bidgroup.tec.tni.nomibanco.dtos.QuejasSolicitudesDto;
 public interface IQuejasSolicitudesService {
     // List<QuejasSolicitudesDto> getQuejasSolicitudesById(Long id);
     List<QuejasSolicitudesDto> getQuejasSolicitudes();
-    // QuejasSolicitudesDto getQuejasSolicitudesById(Long id);
+    // QuejasSolicitudesDto getSolicitudesQuejasById(Long id);
 }
