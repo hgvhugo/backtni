@@ -29,9 +29,9 @@ public class QuejasSolicitudesController {
     private IQuejasSolicitudesService quejasSolicitudesService;
 
     @Operation(summary = "Método para la obtención de quejas y solicitudes", 
-            description = "Este endpoint permite obtener una lista de quejas y solicitudes. " +
-                          "Lanza respuesta con estatus 200 OK si hay quejas y solciitudes. " +
-                          "Lanza una ResourceNotFoundException con estatus 404 Not Found si no hay quejas y solicitudes. " +
+            description = "Este endpoint permite obtener una lista de solicitudes y quejas. " +
+                          "Lanza respuesta con estatus 200 OK si hay solciitudes y quejas. " +
+                          "Lanza una ResourceNotFoundException con estatus 404 Not Found si no hay solicitudes y quejas. " +
                           "Lanza una Exception si ocurre un error general durante el proceso.")
     @PostMapping()
     public ResponseEntity<?> getQuejasSolicitudes() {
@@ -39,7 +39,7 @@ public class QuejasSolicitudesController {
         try {
             List<QuejasSolicitudesDto> quejasSolicitudes = quejasSolicitudesService.getQuejasSolicitudes();
             genericResponseDto.setCode("Success");
-            genericResponseDto.setMessage("Quejas y Solicitudes obtenidos exitosamente");
+            genericResponseDto.setMessage("Solicitudesy Quejas obtenidos exitosamente");
             genericResponseDto.setData(quejasSolicitudes);
             
             return ResponseEntity
@@ -53,17 +53,20 @@ public class QuejasSolicitudesController {
         // return ResponseEntity.ok("Hola Mundo");
     }
 
-    @GetMapping("/admin")
-    public ResponseEntity<String> holaAdmin() {
-        try {
-            return ResponseEntity.ok("Hola Mundo admin");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            ErrorDto error = new ErrorDto();
-            error.setError_message(e.getMessage());
-            error.setError_code("Error 1");
-            return ResponseEntity.badRequest().body("Error");
-        }
 
-    }
+    
+    // @GetMapping("/admin")
+    // public ResponseEntity<String> holaAdmin() {
+    //     try {
+    //         return ResponseEntity.ok("Hola Mundo admin");
+    //     } catch (Exception e) {
+    //         System.out.println(e.getMessage());
+    //         ErrorDto error = new ErrorDto();
+    //         error.setError_message(e.getMessage());
+    //         error.setError_code("Error 1");
+    //         return ResponseEntity.badRequest().body("Error");
+    //     }
+
+    // }
+
 }

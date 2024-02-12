@@ -1,5 +1,6 @@
 package mx.bidgroup.tec.tni.nomibanco.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import mx.bidgroup.tec.tni.nomibanco.dtos.GenericResponseDto;
-
+import mx.bidgroup.tec.tni.nomibanco.dtos.RolDto;
 import mx.bidgroup.tec.tni.nomibanco.dtos.ServicioDto;
 import mx.bidgroup.tec.tni.nomibanco.exceptions.ResourceNotFoundException;
 import mx.bidgroup.tec.tni.nomibanco.services.IServicesService;
@@ -21,6 +22,34 @@ public class ServicioController {
 
     @Autowired
     private IServicesService servicesService;
+
+
+    @Operation(summary = "Método para la obtención de roles", 
+            description = "Este endpoint permite obtener una lista de roles " +
+                          "Lanza respuesta con estatus 200 OK si hay roles registrados" +
+                          "Lanza una ResourceNotFoundException con estatus 404 Not Found si no hay roles registrados " +
+                          "Lanza una Exception si ocurre un error general durante el proceso.")
+    @PostMapping()
+    public ResponseEntity<?> getServices(){
+        List<ServicioDto> ls = new ArrayList<>();
+        GenericResponseDto<ServicioDto> genericResponseDto = new GenericResponseDto<>();
+
+        try {
+            ls = servicesService.getServices();
+            genericResponseDto.setCode("Success");
+            genericResponseDto.setMessage("Servicios obtenidos exitosamente");
+            genericResponseDto.setData(ls);
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type", "application/json")
+                    .body(genericResponseDto);
+        }catch(ResourceNotFoundException e){
+            throw new ResourceNotFoundException("Roles");
+        }catch (Exception e) {
+                 throw e;
+        }  
+    }
 
     @Operation(summary = "Método para obter un servicio por id", description = "Este endpoint permite obtener el servicio por id "
             +

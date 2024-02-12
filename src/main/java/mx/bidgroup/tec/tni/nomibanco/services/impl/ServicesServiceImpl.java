@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import mx.bidgroup.tec.tni.nomibanco.dtos.QuejasSolicitudesDto;
 // import mx.bidgroup.tec.tni.nomibanco.dtos.MenuDto;
 // import mx.bidgroup.tec.tni.nomibanco.dtos.QuejasSolicitudesDto;
 // import mx.bidgroup.tec.tni.nomibanco.dtos.RolDto;
 import mx.bidgroup.tec.tni.nomibanco.dtos.ServicioDto;
+import mx.bidgroup.tec.tni.nomibanco.entities.cat.ServiceEntity;
+import mx.bidgroup.tec.tni.nomibanco.entities.tbl.QuejasSolicitudesEntity;
 // import mx.bidgroup.tec.tni.nomibanco.entities.cat.ServiceEntity;
 // import mx.bidgroup.tec.tni.nomibanco.entities.cat.MenuEntity;
 // import mx.bidgroup.tec.tni.nomibanco.entities.tbl.QuejasSolicitudesEntity;
@@ -30,6 +33,25 @@ import mx.bidgroup.tec.tni.nomibanco.services.IServicesService;
 public class ServicesServiceImpl implements IServicesService {
     private final IServicesRepository servicesRepository;
     private final ModelMapper modelMapper;
+
+    @Override
+    public List<ServicioDto> getServices() {
+         try {
+            log.info("Ingresa a getQuejasSolicitudes method de QuejasSolicitudesRepository");
+
+            List<ServiceEntity> ls = servicesRepository.findAll();
+            if (ls.isEmpty()) {
+                log.error("Error en getServices method de ServicesRepository:  No se encontraron Servicios");
+                throw new ResourceNotFoundException("Servicios");
+            }
+
+            return ls.stream().map(services -> modelMapper.map(services, ServicioDto.class)).toList();
+            
+         } catch (Exception e) {
+            log.error("Error en getServices method de ServicesRepository: {}", e.getMessage());
+            throw e;
+        }
+    }
 
     @Override
     public ServicioDto getServiceById(Long id_servicio) {
