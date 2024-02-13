@@ -1,26 +1,23 @@
 package mx.bidgroup.tec.tni.nomibanco.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import mx.bidgroup.tec.tni.nomibanco.dtos.ErrorDto;
 import mx.bidgroup.tec.tni.nomibanco.dtos.GenericResponseDto;
-// import mx.bidgroup.tec.tni.nomibanco.dtos.MenuDto;
-// import mx.bidgroup.tec.tni.nomibanco.dtos.MenuDto;
 import mx.bidgroup.tec.tni.nomibanco.dtos.QuejasSolicitudesDto;
-import mx.bidgroup.tec.tni.nomibanco.dtos.ServicioDto;
-import mx.bidgroup.tec.tni.nomibanco.exceptions.ResourceNotFoundException;
 import mx.bidgroup.tec.tni.nomibanco.services.IQuejasSolicitudesService;
+import mx.bidgroup.tec.tni.nomibanco.validations.OnCreate;
 
 @RestController
 @RequestMapping("api/v1/quejassolicitudes")
@@ -55,6 +52,61 @@ public class QuejasSolicitudesController {
         }
         // return ResponseEntity.ok("Hola Mundo");
     }
+    
+    @Operation(summary = "Método para la obtención de quejas y solicitudes", description = "Este endpoint permite guardar un solicitud. "
+    +
+    "Lanza respuesta con estatus 200 OK al guardar la solciitud. " +
+    "Lanza una ResourceNotFoundException con estatus 404 Not Found si no hay solicitudes y quejas. " +
+    "Lanza una Exception si ocurre un error general durante el proceso.")
+    @PostMapping("/create")
+    public ResponseEntity<?> createSolicitudesQuejas(@RequestBody QuejasSolicitudesDto obj) {
+        GenericResponseDto<QuejasSolicitudesDto> genericResponseDto = new GenericResponseDto<>();
+
+        try {
+
+            QuejasSolicitudesDto dto = quejasSolicitudesService.createSolicitudQueja(obj);
+            genericResponseDto.setCode("Success");
+            genericResponseDto.setMessage("Solicitud creada exitosamente");
+            genericResponseDto.setData(List.of(dto));
+
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .header("Content-Type", "application/json")
+                    .body(genericResponseDto);
+
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    // @PostMapping()
+    // public ResponseEntity<?> createSolicitudesQuejas(@RequestBody QuejasSolicitudesDto obj) {
+
+    //     List<QuejasSolicitudesDto> ls = new ArrayList<>();
+
+    //     GenericResponseDto<QuejasSolicitudesDto> genericResponseDto = new GenericResponseDto<>();
+
+    //     try {
+    //         ls.add(quejasSolicitudesService.createSolicitudQueja(obj));
+    //         genericResponseDto.setCode("Success");
+    //         genericResponseDto.setMessage("Solicitud creada exitosamente");
+    //         genericResponseDto.setData(ls);
+
+    //         return ResponseEntity
+    //                 .status(HttpStatus.CREATED)
+    //                 .header("Content-Type", "application/json")
+    //                 .body(genericResponseDto);
+    //     } catch(ConflictException e){
+    //         throw new ConflictException("Error al crear solicitud, causa: " + e.getMessage()) {
+    //         };
+    //     }catch(BadRequestException e){
+    //         throw new BadRequestException("Error al crear solicitud, causa: " + e.getMessage()) {
+    //         };
+    //     }catch (Exception e) {
+    //         throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al crear solicitud, causa: " + e.getMessage()) {
+    //         };
+    //     }
+
+    // }
 
     // @Operation(summary = "Método para obter una Solicitud y/o queja por id", description = "Este endpoint permite obtener la solicitud por id "
     //         +

@@ -7,4 +7,5 @@ public interface IQuejasSolicitudesService {
     // List<QuejasSolicitudesDto> getQuejasSolicitudesById(Long id);
     List<QuejasSolicitudesDto> getQuejasSolicitudes();
     // QuejasSolicitudesDto getSolicitudesQuejasById(Long id);
+    QuejasSolicitudesDto createSolicitudQueja(QuejasSolicitudesDto obj);
 }

@@ -2,6 +2,8 @@ package mx.bidgroup.tec.tni.nomibanco.dtos;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 // import com.fasterxml.jackson.annotation.JsonIgnore;
 
 // import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,18 +26,22 @@ public class QuejasSolicitudesDto {
     private Long id;
 
     // @Schema(accessMode = AccessMode.WRITE_ONLY , description = "Identificador del menu" )
-    @NotNull(message = "El id es requerido" , groups = {OnUpdate.class})
+    @NotBlank(message = "La fecha no puede ser vacío"  , groups = {OnCreate.class, OnUpdate.class})
+    @NotNull(message = "El id es requerido" , groups = {OnCreate.class, OnUpdate.class})
     private Long idServicio;
 
     // @Schema(accessMode = AccessMode.WRITE_ONLY , description = "Identificador del menu" )
-    @NotNull(message = "El id es requerido" , groups = {OnUpdate.class})
+    @NotBlank(message = "La fecha no puede ser vacío"  , groups = {OnCreate.class, OnUpdate.class})
+    @NotNull(message = "El id es requerido" , groups = {OnCreate.class, OnUpdate.class})
     private Long idTni;
 
     // @Schema(accessMode = AccessMode.WRITE_ONLY , description = "Identificador del menu" )
-    @NotNull(message = "El id es requerido" , groups = {OnUpdate.class})
+    @NotBlank(message = "La fecha no puede ser vacío"  , groups = {OnCreate.class, OnUpdate.class})
+    @NotNull(message = "El id es requerido" , groups = {OnCreate.class, OnUpdate.class})
     private Long idUsuario;
 
-    @NotNull(message = "La baja lógica es requerida (lowLogic)"  , groups = {OnUpdate.class})
+    @NotBlank(message = "La fecha no puede ser vacío"  , groups = {OnCreate.class, OnUpdate.class})
+    @NotNull(message = "La baja lógica es requerida (lowLogic)"  , groups = {OnCreate.class, OnUpdate.class})
     private Long Estatus;
     
     @NotBlank(message = "La fecha no puede ser vacío"  , groups = {OnCreate.class, OnUpdate.class})
@@ -48,6 +54,7 @@ public class QuejasSolicitudesDto {
 
     // @NotBlank(message = "La fecha no puede ser vacío"  , groups = {OnCreate.class, OnUpdate.class})
     // @NotNull(message =  "La fecha es requerido"  , groups = {OnCreate.class, OnUpdate.class})
+    // @JsonIgnore(groups = {OnCreate.class, OnUpdate.class})
     private ServicioDto servicio;
     
 }

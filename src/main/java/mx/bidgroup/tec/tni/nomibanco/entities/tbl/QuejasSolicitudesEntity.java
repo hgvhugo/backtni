@@ -6,19 +6,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 // import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails.Address;
-import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails.Address;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.*;
-import mx.bidgroup.tec.tni.nomibanco.dtos.QuejasSolicitudesDto;
-import mx.bidgroup.tec.tni.nomibanco.dtos.ServicioDto;
-import mx.bidgroup.tec.tni.nomibanco.entities.cat.MenuEntity;
 import mx.bidgroup.tec.tni.nomibanco.entities.cat.ServiceEntity;
 
 @AllArgsConstructor

@@ -9,10 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.*;
-import mx.bidgroup.tec.tni.nomibanco.dtos.QuejasSolicitudesDto;
-import mx.bidgroup.tec.tni.nomibanco.dtos.ServicioDto;
 import mx.bidgroup.tec.tni.nomibanco.entities.tbl.QuejasSolicitudesEntity;
-import mx.bidgroup.tec.tni.nomibanco.entities.tbr.RoleMenuEntity;
 
 @AllArgsConstructor
 @NoArgsConstructor
