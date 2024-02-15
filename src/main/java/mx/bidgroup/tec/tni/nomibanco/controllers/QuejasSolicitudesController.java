@@ -1,5 +1,23 @@
 package mx.bidgroup.tec.tni.nomibanco.controllers;
 
+// import java.util.ArrayList;
+// import java.util.List;
+
+// // import org.hibernate.validator.internal.util.logging.Log_.logger;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.http.HttpStatus;
+// import org.springframework.http.ResponseEntity;
+
+// import io.swagger.v3.oas.annotations.Operation;
+// // import io.swagger.v3.oas.annotations.parameters.RequestBody;
+// import io.swagger.v3.oas.annotations.tags.Tag;
+// import lombok.extern.log4j.Log4j2;
+// import mx.bidgroup.tec.tni.nomibanco.dtos.GenericResponseDto;
+// import mx.bidgroup.tec.tni.nomibanco.dtos.QuejasSolicitudesDto;
+// import mx.bidgroup.tec.tni.nomibanco.services.IQuejasSolicitudesService;
+// // import mx.bidgroup.tec.tni.nomibanco.validations.OnCreate;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,21 +25,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tag; 
 import mx.bidgroup.tec.tni.nomibanco.dtos.GenericResponseDto;
 import mx.bidgroup.tec.tni.nomibanco.dtos.QuejasSolicitudesDto;
+// import mx.bidgroup.tec.tni.nomibanco.dtos.RolDto;
+import mx.bidgroup.tec.tni.nomibanco.exceptions.BadRequestException;
+import mx.bidgroup.tec.tni.nomibanco.exceptions.ResourceNotFoundException;
 import mx.bidgroup.tec.tni.nomibanco.services.IQuejasSolicitudesService;
-import mx.bidgroup.tec.tni.nomibanco.validations.OnCreate;
+// import mx.bidgroup.tec.tni.nomibanco.services.IRoleService;
+import mx.bidgroup.tec.tni.nomibanco.validations.OnCreate; 
+import mx.bidgroup.tec.tni.nomibanco.validations.OnUpdate;
+// import java.util.ArrayList;
+// import java.util.List;
+
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.http.HttpStatus;
+// import org.springframework.http.ResponseEntity;
+// import org.springframework.validation.annotation.Validated;
+// import org.springframework.validation.annotation.Validated;
+
 
 @RestController
 @RequestMapping("api/v1/quejassolicitudes")
 @Tag(name = "QuejasSolicitudes", description = "Endpoint para Quejas y Solciitudes")
+// @Log4j2
 
 public class QuejasSolicitudesController {
 
@@ -39,7 +68,7 @@ public class QuejasSolicitudesController {
         try {
             List<QuejasSolicitudesDto> quejasSolicitudes = quejasSolicitudesService.getQuejasSolicitudes();
             genericResponseDto.setCode("Success");
-            genericResponseDto.setMessage("Solicitudesy Quejas obtenidos exitosamente");
+            genericResponseDto.setMessage("Solicitudes y Quejas obtenidos exitosamente");
             genericResponseDto.setData(quejasSolicitudes);
 
             return ResponseEntity
@@ -60,6 +89,7 @@ public class QuejasSolicitudesController {
     "Lanza una Exception si ocurre un error general durante el proceso.")
     @PostMapping("/create")
     public ResponseEntity<?> createSolicitudesQuejas(@RequestBody QuejasSolicitudesDto obj) {
+        // log.info("objeto de insertar solicitud: " + obj);
         GenericResponseDto<QuejasSolicitudesDto> genericResponseDto = new GenericResponseDto<>();
 
         try {
@@ -73,7 +103,6 @@ public class QuejasSolicitudesController {
                     .status(HttpStatus.CREATED)
                     .header("Content-Type", "application/json")
                     .body(genericResponseDto);
-
         } catch (Exception e) {
             throw e;
         }
