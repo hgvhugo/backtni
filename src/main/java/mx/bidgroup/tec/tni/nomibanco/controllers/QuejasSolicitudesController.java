@@ -17,7 +17,6 @@ package mx.bidgroup.tec.tni.nomibanco.controllers;
 // import mx.bidgroup.tec.tni.nomibanco.services.IQuejasSolicitudesService;
 // // import mx.bidgroup.tec.tni.nomibanco.validations.OnCreate;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,15 +26,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag; 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import mx.bidgroup.tec.tni.nomibanco.dtos.DocumentoDto;
 import mx.bidgroup.tec.tni.nomibanco.dtos.GenericResponseDto;
 import mx.bidgroup.tec.tni.nomibanco.dtos.QuejasSolicitudesDto;
 // import mx.bidgroup.tec.tni.nomibanco.dtos.RolDto;
 import mx.bidgroup.tec.tni.nomibanco.exceptions.BadRequestException;
 import mx.bidgroup.tec.tni.nomibanco.exceptions.ResourceNotFoundException;
+import mx.bidgroup.tec.tni.nomibanco.services.IDocumentoService;
 import mx.bidgroup.tec.tni.nomibanco.services.IQuejasSolicitudesService;
 // import mx.bidgroup.tec.tni.nomibanco.services.IRoleService;
-import mx.bidgroup.tec.tni.nomibanco.validations.OnCreate; 
+import mx.bidgroup.tec.tni.nomibanco.validations.OnCreate;
 import mx.bidgroup.tec.tni.nomibanco.validations.OnUpdate;
 // import java.util.ArrayList;
 // import java.util.List;
@@ -46,7 +47,6 @@ import mx.bidgroup.tec.tni.nomibanco.validations.OnUpdate;
 // import org.springframework.validation.annotation.Validated;
 // import org.springframework.validation.annotation.Validated;
 
-
 @RestController
 @RequestMapping("api/v1/quejassolicitudes")
 @Tag(name = "QuejasSolicitudes", description = "Endpoint para Quejas y Solciitudes")
@@ -56,6 +56,8 @@ public class QuejasSolicitudesController {
 
     @Autowired
     private IQuejasSolicitudesService quejasSolicitudesService;
+    @Autowired
+    private IDocumentoService documentoService;
 
     @Operation(summary = "Método para la obtención de quejas y solicitudes", description = "Este endpoint permite obtener una lista de solicitudes y quejas. "
             +
@@ -81,24 +83,23 @@ public class QuejasSolicitudesController {
         }
         // return ResponseEntity.ok("Hola Mundo");
     }
-    
+
     @Operation(summary = "Método para la obtención de quejas y solicitudes", description = "Este endpoint permite guardar un solicitud. "
-    +
-    "Lanza respuesta con estatus 200 OK al guardar la solciitud. " +
-    "Lanza una ResourceNotFoundException con estatus 404 Not Found si no hay solicitudes y quejas. " +
-    "Lanza una Exception si ocurre un error general durante el proceso.")
+            +
+            "Lanza respuesta con estatus 200 OK al guardar la solciitud. " +
+            "Lanza una ResourceNotFoundException con estatus 404 Not Found si no hay solicitudes y quejas. " +
+            "Lanza una Exception si ocurre un error general durante el proceso.")
     @PostMapping("/create")
     public ResponseEntity<?> createSolicitudesQuejas(@RequestBody QuejasSolicitudesDto obj) {
         // log.info("objeto de insertar solicitud: " + obj);
         GenericResponseDto<QuejasSolicitudesDto> genericResponseDto = new GenericResponseDto<>();
 
         try {
-
             QuejasSolicitudesDto dto = quejasSolicitudesService.createSolicitudQueja(obj);
             genericResponseDto.setCode("Success");
             genericResponseDto.setMessage("Solicitud creada exitosamente");
             genericResponseDto.setData(List.of(dto));
-
+            createDocumento(obj.getDocumentoLs(), dto);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .header("Content-Type", "application/json")
@@ -107,60 +108,86 @@ public class QuejasSolicitudesController {
             throw e;
         }
     }
+
+    private void createDocumento(DocumentoDto[] obj, QuejasSolicitudesDto dto) {
+        // log.info("objeto de insertar solicitud: " + obj);
+        // GenericResponseDto<DocumentoDto> genericResponseDto = new
+        // GenericResponseDto<>();
+        GenericResponseDto<DocumentoDto> genericResponseDocDto = new GenericResponseDto<>();
+        try {
+            for (DocumentoDto iterable_element : obj) {
+                iterable_element.setIdSolicitud(dto.getId());
+                DocumentoDto documentoDto = documentoService.createDocumento(iterable_element);
+                genericResponseDocDto.setCode("Success");
+                // genericResponseDocDto.setMessage("Documento de la solicitud creada exitosamente");
+                // genericResponseDocDto.setData(List.of(documentoDto));
+            };
+        } catch (Exception e) {
+            throw e;
+        }
+    }
     // @PostMapping()
-    // public ResponseEntity<?> createSolicitudesQuejas(@RequestBody QuejasSolicitudesDto obj) {
+    // public ResponseEntity<?> createSolicitudesQuejas(@RequestBody
+    // QuejasSolicitudesDto obj) {
 
-    //     List<QuejasSolicitudesDto> ls = new ArrayList<>();
+    // List<QuejasSolicitudesDto> ls = new ArrayList<>();
 
-    //     GenericResponseDto<QuejasSolicitudesDto> genericResponseDto = new GenericResponseDto<>();
+    // GenericResponseDto<QuejasSolicitudesDto> genericResponseDto = new
+    // GenericResponseDto<>();
 
-    //     try {
-    //         ls.add(quejasSolicitudesService.createSolicitudQueja(obj));
-    //         genericResponseDto.setCode("Success");
-    //         genericResponseDto.setMessage("Solicitud creada exitosamente");
-    //         genericResponseDto.setData(ls);
+    // try {
+    // ls.add(quejasSolicitudesService.createSolicitudQueja(obj));
+    // genericResponseDto.setCode("Success");
+    // genericResponseDto.setMessage("Solicitud creada exitosamente");
+    // genericResponseDto.setData(ls);
 
-    //         return ResponseEntity
-    //                 .status(HttpStatus.CREATED)
-    //                 .header("Content-Type", "application/json")
-    //                 .body(genericResponseDto);
-    //     } catch(ConflictException e){
-    //         throw new ConflictException("Error al crear solicitud, causa: " + e.getMessage()) {
-    //         };
-    //     }catch(BadRequestException e){
-    //         throw new BadRequestException("Error al crear solicitud, causa: " + e.getMessage()) {
-    //         };
-    //     }catch (Exception e) {
-    //         throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al crear solicitud, causa: " + e.getMessage()) {
-    //         };
-    //     }
+    // return ResponseEntity
+    // .status(HttpStatus.CREATED)
+    // .header("Content-Type", "application/json")
+    // .body(genericResponseDto);
+    // } catch(ConflictException e){
+    // throw new ConflictException("Error al crear solicitud, causa: " +
+    // e.getMessage()) {
+    // };
+    // }catch(BadRequestException e){
+    // throw new BadRequestException("Error al crear solicitud, causa: " +
+    // e.getMessage()) {
+    // };
+    // }catch (Exception e) {
+    // throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error
+    // al crear solicitud, causa: " + e.getMessage()) {
+    // };
+    // }
 
     // }
 
-    // @Operation(summary = "Método para obter una Solicitud y/o queja por id", description = "Este endpoint permite obtener la solicitud por id "
-    //         +
-    //         "Lanza respuesta con estatus 200 OK si hay Solicitud registrado" +
-    //         "Lanza una ResourceNotFoundException con estatus 404 Not Found si no hay Solicituds registrados " +
-    //         "Lanza una Exception si ocurre un error general durante el proceso.")
+    // @Operation(summary = "Método para obter una Solicitud y/o queja por id",
+    // description = "Este endpoint permite obtener la solicitud por id "
+    // +
+    // "Lanza respuesta con estatus 200 OK si hay Solicitud registrado" +
+    // "Lanza una ResourceNotFoundException con estatus 404 Not Found si no hay
+    // Solicituds registrados " +
+    // "Lanza una Exception si ocurre un error general durante el proceso.")
     // @GetMapping("/{id}")
     // public ResponseEntity<?> getSolicitudQuejaById(@PathVariable Long id) {
-    //     try {
-    //         ServicioDto obj = quejasSolicitudesService.getServiceById(id);
-    //         GenericResponseDto<ServicioDto> genericResponseDto = new GenericResponseDto<>();
-    //         genericResponseDto.setCode("Success");
-    //         genericResponseDto.setMessage("Solicitud obtenido exitosamente");
-    //         genericResponseDto.setData(List.of(obj));
+    // try {
+    // ServicioDto obj = quejasSolicitudesService.getServiceById(id);
+    // GenericResponseDto<ServicioDto> genericResponseDto = new
+    // GenericResponseDto<>();
+    // genericResponseDto.setCode("Success");
+    // genericResponseDto.setMessage("Solicitud obtenido exitosamente");
+    // genericResponseDto.setData(List.of(obj));
 
-    //         return ResponseEntity
-    //                 .status(HttpStatus.OK)
-    //                 .header("Content-Type", "application/json")
-    //                 .body(genericResponseDto);
+    // return ResponseEntity
+    // .status(HttpStatus.OK)
+    // .header("Content-Type", "application/json")
+    // .body(genericResponseDto);
 
-    //     } catch (ResourceNotFoundException e) {
-    //         throw new ResourceNotFoundException("Solicitud", "id", id);
-    //     } catch (Exception e) {
-    //         throw e;
-    //     }
+    // } catch (ResourceNotFoundException e) {
+    // throw new ResourceNotFoundException("Solicitud", "id", id);
+    // } catch (Exception e) {
+    // throw e;
+    // }
     // }
 
     // @GetMapping("/admin")
